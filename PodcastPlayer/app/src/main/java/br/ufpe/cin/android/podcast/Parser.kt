@@ -25,8 +25,8 @@ object Parser {
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.eventType == XmlPullParser.START_TAG) {
                 val tag = parser.name
-                //delimitando que estamos apenas interessados em tags <item>
-                if (tag == "item") {
+                //delimitando que estamos apenas interessados em tags <view>
+                if (tag == "view") {
                     var title = ""
                     while (parser.next() != XmlPullParser.END_TAG) {
                         if (parser.eventType == XmlPullParser.START_TAG) {
@@ -84,7 +84,7 @@ object Parser {
                 continue
             }
             val name = parser.name
-            if (name == "item") {
+            if (name == "view") {
                 items.add(readItem(parser))
             } else {
                 skip(parser)
@@ -99,7 +99,7 @@ object Parser {
         var link: String? = null
         var pubDate: String? = null
         var description: String? = null
-        parser.require(XmlPullParser.START_TAG, null, "item")
+        parser.require(XmlPullParser.START_TAG, null, "view")
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
                 continue

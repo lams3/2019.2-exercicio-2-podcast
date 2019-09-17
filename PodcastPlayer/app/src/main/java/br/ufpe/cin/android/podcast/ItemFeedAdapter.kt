@@ -9,14 +9,18 @@ import kotlinx.android.synthetic.main.itemlista.view.*
 import androidx.core.content.ContextCompat.startActivity
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 
+const val ITEMFEED_EXTRA = "br.ufpe.cin.android.podcast.ITEMFEED"
 
 class ItemFeedAdapter (private val itemFeeds: List<ItemFeed>, private val context : Context) : RecyclerView.Adapter<ItemFeedAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = itemFeeds[position]
-        holder.item.item_title.text = item.title
-        holder.item.item_date.text = item.pubDate
-        holder.item.item_action.setOnClickListener {
+        holder.item = item
+        holder.view.setOnClickListener(holder)
+        holder.view.item_title.text = item.title
+        holder.view.item_date.text = item.pubDate
+        holder.view.item_action.setOnClickListener {
             val url = item.downloadLink
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(url)
@@ -31,5 +35,15 @@ class ItemFeedAdapter (private val itemFeeds: List<ItemFeed>, private val contex
 
     override fun getItemCount(): Int = itemFeeds.size
 
-    class ViewHolder(val item : View) : RecyclerView.ViewHolder(item)
+    class ViewHolder(val view : View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+        var item : ItemFeed? = null
+
+        override fun onClick(p0: View?) {
+            val intent = Intent(view.context, EpisodeDetailActivity::class.java).apply {
+                putExtra(ITEMFEED_EXTRA, item)
+            }
+
+            startActivity(view.context, intent, null)
+        }
+    }
 }

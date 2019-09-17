@@ -117,7 +117,10 @@ object Parser {
                 skip(parser)
             }
         }
-        return ItemFeed(title!!, link!!, pubDate!!, description!!, "carregar o link")
+
+        val downloadLink = link!!
+
+        return ItemFeed(title!!, link!!, pubDate!!, description!!, downloadLink)
     }
 
     // Processa tags de forma parametrizada no feed.
